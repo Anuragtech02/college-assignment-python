@@ -4,8 +4,10 @@
 
 ```
 '''
-@author Anurag Pal
-CSB 19C4113
+__author__ = "Anurag Pal"
+__email__ = "19bcs113@ietdavv.edu.in"
+__roll__ = "19C4113"
+__class__ = "CSB"
 
 Write a Python program to sum all the items in a list
 '''
