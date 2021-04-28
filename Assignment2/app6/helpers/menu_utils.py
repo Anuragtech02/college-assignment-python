@@ -18,7 +18,11 @@ def deposit_money(user: User, bank: Bank):
     """
     print("*" * 30)
     amt = float(input("Please enter amount to deposit: "))
-    bank.credit_money(user, amt)
+    res = bank.credit_money(user, amt)
+    while isinstance(res, dict):
+        print(res)
+        amt = float(input("Please enter amount to depost: "))
+        res = bank.credit_money(user, amt)
     print("*" * 30, "Successfull", sep="\n")
 
 
@@ -30,7 +34,7 @@ def withdraw_money(user: User, bank: Bank):
     print("*" * 30)
     amt = float(input("Please enter amount to withdraw: "))
     res = bank.withdraw_money(user, amt)
-    while isinstance(res, type({})):
+    while isinstance(res, dict):
         print(res)
         amt = float(input("Please enter amount to withdraw: "))
         res = bank.withdraw_money(user, amt)
@@ -65,7 +69,7 @@ def update_details(user: User, bank: Bank):
         curr_pwd = getpass.getpass(prompt="Please enter current password: ")
         new_pwd = getpass.getpass(prompt="Please enter new password: ")
         res = user.modify_user("password", {"cpass": curr_pwd, "password": new_pwd})
-        while isinstance(res, type({})):
+        while isinstance(res, dict):
             print(res)
             curr_pwd = curr_pwd = getpass.getpass(
                 prompt="Please enter current password: "
@@ -77,7 +81,7 @@ def update_details(user: User, bank: Bank):
         curr_pwd = getpass.getpass(prompt="Please enter current password: ")
         new_pin = getpass.getpass(prompt="Please enter new PIN: ")
         res = user.modify_user("pin", {"cpass": curr_pwd, "pin": new_pin})
-        while isinstance(res, type({})):
+        while isinstance(res, dict):
             print(res)
             curr_pwd = curr_pwd = getpass.getpass(
                 prompt="Please enter current password: "
@@ -98,7 +102,7 @@ def check_account_balance(user: User, bank: Bank):
 
     pin = getpass.getpass("Please enter your 4 digit PIN: ")
     res = bank.get_account_balance(user, pin)
-    while isinstance(res, type({})):
+    while isinstance(res, dict):
         print(res)
         pin = getpass.getpass("Renter PIN: ")
         res = bank.get_account_balance(user, pin)
@@ -115,7 +119,7 @@ def transaction_history(user: User, bank: Bank):
 
     pin = getpass.getpass("Please enter your 4 digit PIN: ")
     bal = bank.get_account_balance(user, pin)
-    while isinstance(bal, type({})):
+    while isinstance(bal, dict):
         print(bal)
         pin = getpass.getpass("Renter PIN: ")
         bal = bank.get_account_balance(user, pin)
@@ -124,7 +128,7 @@ def transaction_history(user: User, bank: Bank):
     print("*" * 30)
 
     if len(res) == 0:
-        print("No history fuond")
+        print("No history found")
 
     for transaction in res:
         print(transaction.get("type").upper(), transaction.get("amount"), sep=" ")

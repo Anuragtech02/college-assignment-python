@@ -61,6 +61,10 @@ class Bank:
         return self.__get_current_user(user).get("account_balance")
 
     def credit_money(self, user: User, amount: float):
+
+        if(amount <=0 ):
+            return {"error": "Amount must be greater than 0"}
+
         # Get the current user and increment amount
         curr_user = self.__get_current_user(user)
         curr_user["account_balance"] = curr_user.get("account_balance") + amount
@@ -78,7 +82,13 @@ class Bank:
         # Get the current user
         curr_user = self.__get_current_user(user)
 
-        if curr_user.get("account_balance") <= amount:
+        if(amount == -1):
+            return
+
+        if(amount <= 0):
+            return {"error": "Amount must be greater than 0"}
+
+        if curr_user.get("account_balance") < amount:
             return {"errror": "Not enough balance"}
 
         curr_user["account_balance"] = curr_user.get("account_balance") - amount
