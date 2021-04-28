@@ -1,7 +1,19 @@
-import getpass
+"""
+__author__ = "Anurag Pal"
+__email__ = "19bcs113@ietdavv.edu.in"
+__roll__ = "19C4113"
+__class__ = "CSB"
+
+__desc__ = "Utility/Helper functions for main"
+"""
+
+import getpass  # Used to hide password on terminal
 
 
 def print_options():
+    """
+    Prints possible menu options to the user
+    """
     print("*" * 30)
     print(
         "Please select the action you want to perform (option number): ",
@@ -16,6 +28,9 @@ def print_options():
 
 
 def user_input():
+    """
+    Prints menu and asks for option input to the user
+    """
     print_options()
     print("*" * 30)
     option = int(input())
@@ -23,6 +38,9 @@ def user_input():
 
 
 def create_bank_account():
+    """
+    Takes all input details from the user, requried for creating bank account.
+    """
     print("*" * 30)
     name = input("Enter your name: ")
     username = input("Create an username: ")

@@ -22,7 +22,6 @@ objects as sumed by you and the functions defined.
 
 from models import User, Bank
 import helpers
-import getpass
 
 bank = Bank()
 
@@ -49,66 +48,20 @@ bank.create_account(user)
 
 # Display menu of options available/provided by bank to the user until 0
 option = None
-while(option != 0):
+while option != 0:
 
     option = helpers.user_input()
-    if(option == 6):
+    if option == 6:
         break
-    elif(option == 1):
-        print("*"*30)
-        amt = float(input("Please enter amount to depost: "))
-        bank.credit_money(user, amt)
-        print("*"*30, "Successfull", sep="\n")
-    elif(option == 2):
-        print("*"*30)
-        amt = float(input("Please enter amount to withdraw: "))
-        bank.withdraw_money(user, amt)
-        print("*"*30, "Successfull", sep="\n")
-    elif(option == 3):
-        print("*"*30, "Please choose what you want to update: ", "1. Name", "2. Mobile", "3. Password", "4. PIN", sep="\n")
-        choose = input()
-        if(choose == 1):
-            name = input("Please enter new name: ")
-            user.modify_user("name", name)
-            print("*"*30, "Successfull", sep="\n")
-        elif(choose == 2):
-            mob = input("Please enter new mobile number: ")
-            user.modify_user("mobile", mob)
-            print("*"*30, "Successfull", sep="\n")
-        elif(choose == 3):
-            curr_pwd = getpass.getpass(prompt="Please enter current password: ")
-            new_pwd = getpass.getpass(prompt="Please enter new password: ")
-            res = user.modify_user("password", curr_pwd, new_pwd)
-            while(isinstance(res, type({}))):
-                print(res)
-                curr_pwd = curr_pwd = getpass.getpass(prompt="Please enter current password: ")
-                new_pwd = getpass.getpass(prompt="Please enter new password: ")
-                res = user.modify_user("password", curr_pwd, new_pwd)
-            print("*"*30, "Successfull", sep="\n")
-        elif(choose == 4):
-            curr_pwd = getpass.getpass(prompt="Please enter current password: ")
-            new_pwd = getpass.getpass(prompt="Please enter new PIN: ")
-            res = user.modify_user("pin", curr_pwd, new_pwd)
-            while(isinstance(res, type({}))):
-                print(res)
-                curr_pwd = curr_pwd = getpass.getpass(prompt="Please enter current password: ")
-                new_pwd = getpass.getpass(prompt="Please enter new PIN: ")
-                res = user.modify_user("pin", curr_pwd, new_pwd)
-            print("*"*30, "Successfull", sep="\n")
-        else:
-            print("Invalid option")
-    elif(option == 4):
-        pin = input("Please enter your 4 digit PIN: ")
-        res = bank.get_account_balance(user,pin)
-        while(isinstance(res, type({}))):
-            print(res)
-            res = bank.get_account_balance(user,pin)
-            print("Renter PIN: ")
-        print(res)
-    elif(option == 5):
-        res = bank.get_transaction_history(user)
-        print("*"*30)
-        for transaction in res:
-            print(transaction.get("type"), transaction.get("amount"), sep=" ")
+    elif option == 1:
+        helpers.deposit_money(user, bank)
+    elif option == 2:
+        helpers.withdraw_money(user, bank)
+    elif option == 3:
+        helpers.update_details(user, bank)
+    elif option == 4:
+        helpers.check_account_balance(user, bank)
+    elif option == 5:
+        helpers.transaction_history(user, bank)
     else:
         print("Invalid Option")

@@ -4,7 +4,7 @@ __email__ = "19bcs113@ietdavv.edu.in"
 __roll__ = "19C4113"
 __class__ = "CSB"
 
-__desc__ = "This is the schema/model for bank object"
+__desc__ = "This is the model for bank object"
 """
 from typing import List, Dict
 from .user_model import User
@@ -17,13 +17,20 @@ class Bank:
         self.__users_list: List[Dict] = []
 
     def create_account(self, user: User):
+        """
+        Creates bank account for the user by adding \n
+        bank specific details to the user object.
+        """
         prev_users = self.__users_list
-        if(len(prev_users) == 0):
-            account_number =  1
+
+        # Increment acc. no. by 1 if any user present otherwise 1
+        if len(prev_users) == 0:
+            account_number = 1
         else:
             account_number = prev_users[-1].get("account_number") + 1
 
         __transaction_history: List[Dict] = []
+
         new_user = {
             **user.get_user(),
             "idx": len(prev_users),
@@ -35,7 +42,10 @@ class Bank:
         self.__users_list = prev_users
 
     def __get_current_user(self, user: User):
-        # print(self.__users_list)
+        """
+        __requires__ = 'User object' \n
+        Returns user if found in the list. Search by username
+        """
         for usr in self.__users_list:
             if usr.get("username") == user.username:
                 return usr
@@ -64,11 +74,11 @@ class Bank:
         new_users_list[curr_user.get("idx")] = curr_user
         self.__users_list = new_users_list
 
-    def withdraw_money(self, user:User, amount: float):
+    def withdraw_money(self, user: User, amount: float):
         # Get the current user
         curr_user = self.__get_current_user(user)
 
-        if(curr_user.get("account_balance") <= amount):
+        if curr_user.get("account_balance") <= amount:
             return {"errror": "Not enough balance"}
 
         curr_user["account_balance"] = curr_user.get("account_balance") - amount
@@ -82,5 +92,5 @@ class Bank:
         new_users_list[curr_user.get("idx")] = curr_user
         self.__users_list = new_users_list
 
-    def get_transaction_history(self, user:User):
+    def get_transaction_history(self, user: User):
         return self.__get_current_user(user).get("transaction_history")
