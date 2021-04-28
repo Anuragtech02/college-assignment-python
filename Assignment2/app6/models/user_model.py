@@ -1,34 +1,38 @@
-'''
+"""
 __author__ = "Anurag Pal"
 __email__ = "19bcs113@ietdavv.edu.in"
 __roll__ = "19C4113"
 __class__ = "CSB"
 
 __desc__ = "This is the schema/model for user object"
-'''
+"""
 
-from pydantic import BaseModel # Python base models. Parent class of all data types in python
+from pydantic import (
+    BaseModel,
+)  # Python base models. Parent class of all data types in python
 
 
 class User:
-
-    def __init__(self, name:str, mobile:str, pin:int, username:str, password:str):
-        self.name = name
-        self.mobile = mobile
-        self.__pin = pin
-        self.username = username
-        self.__password = password
-
+    def __init__(self, name: str, mobile: str, pin: str, username: str, password: str):
+        self.name: str = name
+        self.mobile: str = mobile
+        self.__pin: str = pin
+        self.username: str = username
+        self.__password: str = password
+        
 
     def verify_user(self, uname, passd):
         return self.username == uname and self.__password == passd
+
+    def verify_pin(self, pin):
+        return self.__pin == pin
 
     def get_user(self):
         return {"name": self.name, "mobile": self.mobile, "username": self.username}
 
     def __modify_name(self, new_name):
         self.name = new_name
-    
+
     def __modify_mobile(self, new_mobile):
         self.mobile = new_mobile
 
@@ -41,20 +45,18 @@ class User:
         self.__password = new_pass
 
     @property
-    def __modify_private(self, ctype, uname, value):
-        if(uname != self.username):
-            return
-        if(ctype == 'password'):
+    def __modify_private(self, ctype, cpass, value):
+        if cpass != self.__password:
+            return {"error": "incorrect password"}
+        if ctype == "password":
             self.__modify_pass = value
-        elif(ctype == 'pin'):
+        elif ctype == "pin":
             self.__modify_pin = value
 
-
     def modify_user(self, ctype, value):
-        if(ctype == 'name'):
+        if ctype == "name":
             self.__modify_name(value)
-        elif(ctype == 'mobile'):
+        elif ctype == "mobile":
             self.__modify_mobile(value)
-        elif(ctype == 'password' or ctype == 'pin'):
-            self.__modify_private(ctype, value.get("username"), value.get(ctype))
-        
+        elif ctype == "password" or ctype == "pin":
+            self.__modify_private(ctype, value.get("cpass"), value.get(ctype))
